@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(value = "/api")
 public class MainRestController {
     @Autowired
@@ -27,57 +28,58 @@ public class MainRestController {
     @Autowired
     private ClassMapper classMapper;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> auth(@RequestBody Request request) {
-        UserHelper helperUsers = usersMapper.userByEmail(request.getEmail());
-        if (helperUsers != null) {
-            if (new BCryptPasswordEncoder().matches(request.getPassword(), helperUsers.getPassword())) {
-
-                Users user = new Users();
-                user.setId(helperUsers.getId());
-                user.setPassword(helperUsers.getPassword());
-                user.setAge(helperUsers.getAge());
-                user.setAva_picture(helperUsers.getAva_picture());
-                user.setEmail(helperUsers.getEmail());
-                user.setFirstName(helperUsers.getFirstName());
-                user.setLastName(helperUsers.getLastName());
-
-                List<Long> userRolesId = usersMapper.rolesId(helperUsers.getId());
-                List<Roles> userRoles = new ArrayList<>();
-                for (Long usId : userRolesId) {
-                    Roles role = roleMapper.getRole(usId);
-                    userRoles.add(role);
-
-                }
-                user.setRoles(userRoles);
-                user.setAClass(classMapper.getClassById(helperUsers.getA_class_id()));
-                return new ResponseEntity<>(user, HttpStatus.OK);
-            }
-            System.out.println("User password is incorrect");
-            return ResponseEntity.badRequest().body("Password is incorrect");
-        }
-        System.out.println("User is not found");
-        return ResponseEntity.badRequest().body("User Is not Found");
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Users users) {
-        System.out.println("users: " + users);
-
-        String firstName = users.getFirstName();
-        String lastName = users.getLastName();
-        String ava_picture = users.getAva_picture();
-        String email = users.getEmail();
-        users.setPassword(new BCryptPasswordEncoder().encode(users.getPassword()));
-        String password = users.getPassword();
-        Long a_class_id = users.getAClass().getId();
-        int age = users.getAge();
-
-        usersMapper.addUser(firstName, lastName, ava_picture, email, age, password, a_class_id);
-        UserHelper users1 = usersMapper.userByEmail(email);
-        usersMapper.addUserRole(users1.getId(), 2L);
-        return ResponseEntity.ok(users);
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<?> auth(@RequestBody Request request) {
+//        UserHelper helperUsers = usersMapper.userByEmail(request.getEmail());
+//        if (helperUsers != null) {
+//            if (new BCryptPasswordEncoder().matches(request.getPassword(), helperUsers.getPassword())) {
+//
+//                Users user = new Users();
+//                user.setId(helperUsers.getId());
+//                user.setPassword(helperUsers.getPassword());
+//                user.setAge(helperUsers.getAge());
+//                user.setAva_picture(helperUsers.getAva_picture());
+//                user.setEmail(helperUsers.getEmail());
+//                user.setFirstName(helperUsers.getFirstName());
+//                user.setLastName(helperUsers.getLastName());
+//
+//                List<Long> userRolesId = usersMapper.rolesId(helperUsers.getId());
+//                List<Roles> userRoles = new ArrayList<>();
+//                for (Long usId : userRolesId) {
+//                    Roles role = roleMapper.getRole(usId);
+//                    userRoles.add(role);
+//
+//                }
+//                user.setRoles(userRoles);
+//                user.setAClass(classMapper.getClassById(helperUsers.getA_class_id()));
+//                System.out.println("corrrreect");
+//                return new ResponseEntity<>(user, HttpStatus.OK);
+//            }
+//            System.out.println("User password is incorrect");
+//            return ResponseEntity.badRequest().body("Password is incorrect");
+//        }
+//        System.out.println("User is not found");
+//        return ResponseEntity.badRequest().body("User Is not Found");
+//    }
+//
+//    @PostMapping("/register")
+//    public ResponseEntity<?> register(@RequestBody Users users) {
+//        System.out.println("users: " + users);
+//
+//        String firstName = users.getFirstName();
+//        String lastName = users.getLastName();
+//        String ava_picture = users.getAva_picture();
+//        String email = users.getEmail();
+//        users.setPassword(new BCryptPasswordEncoder().encode(users.getPassword()));
+//        String password = users.getPassword();
+//        Long a_class_id = users.getAClass().getId();
+//        int age = users.getAge();
+//
+//        usersMapper.addUser(firstName, lastName, ava_picture, email, age, password, a_class_id);
+//        UserHelper users1 = usersMapper.userByEmail(email);
+//        usersMapper.addUserRole(users1.getId(), 2L);
+//        return ResponseEntity.ok(users);
+//    }
 
     @GetMapping("/allUsers") //checked
     public List<Users> getAll() {
