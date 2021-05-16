@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserDetailsService {
 
             }
             user.setRoles(userRoles);
-            user.setaClass(classMapper.getClassById(helperUsers.getA_class_id()));
+            user.setAClass(classMapper.getClassById(helperUsers.getA_class_id()));
 
             return user;
         } else {
