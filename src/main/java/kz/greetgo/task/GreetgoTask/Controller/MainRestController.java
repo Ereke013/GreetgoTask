@@ -110,7 +110,7 @@ public class MainRestController {
 
             }
             user.setRoles(userRoles);
-            user.setAClass(classMapper.getClassById(helperUsers.get(i).getA_class_id()));
+            user.setaClass(classMapper.getClassById(helperUsers.get(i).getA_class_id()));
             users.add(user);
         }
         return users;
@@ -173,7 +173,7 @@ public class MainRestController {
 
             }
             user.setRoles(userRoles);
-            user.setAClass(classMapper.getClassById(helperUsers.getA_class_id()));
+            user.setaClass(classMapper.getClassById(helperUsers.getA_class_id()));
             return ResponseEntity.ok(user);
         }
         System.out.println("User is not found");
@@ -199,7 +199,7 @@ public class MainRestController {
         String ava_picture = users.getAva_picture();
         String email = users.getEmail();
         String password = users.getPassword();
-        Long a_class_id = users.getAClass().getId();
+        Long a_class_id = users.getaClass().getId();
         int age = users.getAge();
 
         usersMapper.updateUser(id, firstName, lastName, ava_picture, email, age, password, a_class_id);
@@ -232,7 +232,7 @@ public class MainRestController {
 
             }
             user.setRoles(userRoles);
-            user.setAClass(classMapper.getClassById(helperUsers.get(i).getA_class_id()));
+            user.setaClass(classMapper.getClassById(helperUsers.get(i).getA_class_id()));
             users.add(user);
         }
         return ResponseEntity.ok(users);

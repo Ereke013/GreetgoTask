@@ -51,7 +51,7 @@ public class JwtAuthController {
         System.out.println("Whatapp");
 //       return  ResponseEntity.ok(new JwtResponse(token));
 
-        return new ResponseEntity<>(new JwtResponse(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getPassword(), user.getAva_picture(),user.getAge(), user.getRoles(), user.getAClass(),token), HttpStatus.OK);
+        return new ResponseEntity<>(new JwtResponse(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getPassword(), user.getAva_picture(),user.getAge(), user.getRoles(), user.getaClass(),token), HttpStatus.OK);
     }
 
     @PostMapping(value = "/register")
