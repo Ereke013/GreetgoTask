@@ -12,6 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,17 +117,23 @@ public class MainRestController {
     }
 
     @PostMapping("/addUsers") //checked
-    public ResponseEntity<?> addUser(@RequestBody Users users) {
+    public ResponseEntity<?> addUser(@RequestBody UserHelper users) {
 
         System.out.println("users: " + users);
 
         String firstName = users.getFirstName();
         String lastName = users.getLastName();
         String ava_picture = users.getAva_picture();
+        if(ava_picture.length()<1){
+            ava_picture = "https://mpchsschool.in/wp-content/uploads/2019/10/default-profile-picture.png";
+        }
+        if(!testImage(ava_picture)){
+            ava_picture="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg";
+        }
         String email = users.getEmail();
         users.setPassword(new BCryptPasswordEncoder().encode(users.getPassword()));
         String password = users.getPassword();
-        Long a_class_id = users.getAClass().getId();
+        Long a_class_id = users.getA_class_id();
         int age = users.getAge();
 
         usersMapper.addUser(firstName, lastName, ava_picture, email, age, password, a_class_id);
@@ -234,4 +245,27 @@ public class MainRestController {
     }
 
 
+    public Boolean testImage(String url){
+        try {
+            BufferedImage image = ImageIO.read(new URL(url));
+            //BufferedImage image = ImageIO.read(new URL("http://someimage.jpg"));
+            if(image != null){
+                return true;
+            } else{
+                return false;
+            }
+
+        } catch (MalformedURLException e) {
+            System.err.println("URL error with image");
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            System.err.println("IO error with image");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
+
+

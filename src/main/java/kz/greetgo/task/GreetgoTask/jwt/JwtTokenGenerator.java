@@ -16,7 +16,7 @@ import java.util.function.Function;
 @Component
 public class JwtTokenGenerator {
 
-    private static final long JWT_LIFE_TIME = 3600 *4;
+    private static final long JWT_LIFE_TIME = 3600*24*30;
 
     @Value("${jwt.secret}")
     private String jwtSecret;
